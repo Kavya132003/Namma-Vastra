@@ -20,13 +20,25 @@ class HomeActivity : AppCompatActivity() {
 
         val productList = listOf(
 
-            Product("Traditional Ilkal Saree", "₹2500"),
+            Product(
+                "Traditional Ilkal Saree",
+                "₹2500"
+            ),
 
-            Product("Molakalmuru Silk Saree", "₹4500"),
+            Product(
+                "Molakalmuru Silk Saree",
+                "₹4500"
+            ),
 
-            Product("Handloom Cotton Saree", "₹1800"),
+            Product(
+                "Handloom Cotton Saree",
+                "₹1800"
+            ),
 
-            Product("Bridal Silk Saree", "₹6500")
+            Product(
+                "Bridal Silk Saree",
+                "₹6500"
+            )
 
         )
 
