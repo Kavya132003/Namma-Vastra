@@ -1,8 +1,12 @@
-package com.example.namma_vastra.models
+package com.example.namma_vastra
 
 data class Product(
 
-    val name: String,
-    val price: String
+    var name: String = "",
 
+    var price: String = "",
+
+    var image: String = "",
+
+    var quantity: Int = 1
 )

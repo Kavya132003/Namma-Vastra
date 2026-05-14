@@ -2,48 +2,123 @@ package com.example.namma_vastra
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.namma_vastra.adapters.ProductAdapter
-import com.example.namma_vastra.models.Product
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
+
+    lateinit var recyclerView: RecyclerView
+
+    lateinit var productList: ArrayList<Product>
+
+    lateinit var filteredList: ArrayList<Product>
+
+    lateinit var adapter: ProductAdapter
+
+    lateinit var firestore: FirebaseFirestore
+
+    lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_home)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView =
+            findViewById(R.id.recyclerViewProducts)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        searchView =
+            findViewById(R.id.searchView)
 
-        val productList = listOf(
+        recyclerView.layoutManager =
+            LinearLayoutManager(this)
 
-            Product(
-                "Traditional Ilkal Saree",
-                "₹2500"
-            ),
+        productList = ArrayList()
 
-            Product(
-                "Molakalmuru Silk Saree",
-                "₹4500"
-            ),
+        filteredList = ArrayList()
 
-            Product(
-                "Handloom Cotton Saree",
-                "₹1800"
-            ),
-
-            Product(
-                "Bridal Silk Saree",
-                "₹6500"
-            )
-
-        )
-
-        val adapter = ProductAdapter(productList)
+        adapter = ProductAdapter(filteredList)
 
         recyclerView.adapter = adapter
+
+        firestore = FirebaseFirestore.getInstance()
+
+        loadProducts()
+
+        setupSearch()
+    }
+
+    private fun loadProducts() {
+
+        firestore.collection("products")
+            .get()
+            .addOnSuccessListener { documents ->
+
+                productList.clear()
+
+                filteredList.clear()
+
+                for (document in documents) {
+
+                    val product =
+                        document.toObject(Product::class.java)
+
+                    productList.add(product)
+
+                    filteredList.add(product)
+                }
+
+                adapter.notifyDataSetChanged()
+            }
+    }
+
+    private fun setupSearch() {
+
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    filterProducts(newText)
+
+                    return true
+                }
+            }
+        )
+    }
+
+    private fun filterProducts(query: String?) {
+
+        filteredList.clear()
+
+        if (query.isNullOrEmpty()) {
+
+            filteredList.addAll(productList)
+
+        } else {
+
+            val searchText =
+                query.lowercase(Locale.getDefault())
+
+            for (product in productList) {
+
+                if (product.name.lowercase(Locale.getDefault())
+                        .contains(searchText)
+                ) {
+
+                    filteredList.add(product)
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged()
     }
 }
