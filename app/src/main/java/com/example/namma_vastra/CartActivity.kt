@@ -1,19 +1,20 @@
 package com.example.namma_vastra
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.namma_vastra.adapters.CartAdapter
-import android.content.Intent
-import android.widget.Button
 
 class CartActivity : AppCompatActivity() {
 
     lateinit var recyclerView: RecyclerView
 
     lateinit var totalPriceText: TextView
+
     lateinit var checkoutButton: Button
 
     lateinit var adapter: CartAdapter
@@ -28,6 +29,7 @@ class CartActivity : AppCompatActivity() {
 
         totalPriceText =
             findViewById(R.id.totalPriceText)
+
         checkoutButton =
             findViewById(R.id.checkoutButton)
 

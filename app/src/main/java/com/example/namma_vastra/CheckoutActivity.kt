@@ -6,13 +6,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CheckoutActivity : AppCompatActivity() {
+
+    lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_checkout)
+
+        firestore = FirebaseFirestore.getInstance()
 
         val nameInput =
             findViewById<EditText>(R.id.nameInput)
@@ -48,6 +53,55 @@ class CheckoutActivity : AppCompatActivity() {
 
             } else {
 
+                saveOrderToFirestore(
+                    name,
+                    address,
+                    phone
+                )
+            }
+        }
+    }
+
+    private fun saveOrderToFirestore(
+        name: String,
+        address: String,
+        phone: String
+    ) {
+
+        var total = 0
+
+        val productNames = StringBuilder()
+
+        for (product in CartManager.cartItems) {
+
+            val price =
+                product.price.replace("₹", "")
+                    .toIntOrNull() ?: 0
+
+            total += price * product.quantity
+
+            productNames.append(product.name)
+                .append(", ")
+        }
+
+        val order = Order(
+            customerName = name,
+            address = address,
+            phone = phone,
+            totalPrice = "₹$total",
+            products = productNames.toString()
+        )
+
+        firestore.collection("orders")
+            .add(order)
+            .addOnSuccessListener {
+
+                Toast.makeText(
+                    this,
+                    "Order Placed Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+
                 CartManager.cartItems.clear()
 
                 startActivity(
@@ -59,6 +113,5 @@ class CheckoutActivity : AppCompatActivity() {
 
                 finish()
             }
-        }
     }
 }

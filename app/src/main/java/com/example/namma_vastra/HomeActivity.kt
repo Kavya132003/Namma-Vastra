@@ -1,11 +1,13 @@
 package com.example.namma_vastra
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.namma_vastra.adapters.ProductAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Locale
 
@@ -23,6 +25,8 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var searchView: SearchView
 
+    lateinit var bottomNavigation: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,6 +37,9 @@ class HomeActivity : AppCompatActivity() {
 
         searchView =
             findViewById(R.id.searchView)
+
+        bottomNavigation =
+            findViewById(R.id.bottomNavigation)
 
         recyclerView.layoutManager =
             LinearLayoutManager(this)
@@ -50,6 +57,8 @@ class HomeActivity : AppCompatActivity() {
         loadProducts()
 
         setupSearch()
+
+        setupBottomNavigation()
     }
 
     private fun loadProducts() {
@@ -110,7 +119,8 @@ class HomeActivity : AppCompatActivity() {
 
             for (product in productList) {
 
-                if (product.name.lowercase(Locale.getDefault())
+                if (
+                    product.name.lowercase(Locale.getDefault())
                         .contains(searchText)
                 ) {
 
@@ -120,5 +130,57 @@ class HomeActivity : AppCompatActivity() {
         }
 
         adapter.notifyDataSetChanged()
+    }
+
+    private fun setupBottomNavigation() {
+
+        bottomNavigation.setOnItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_home -> {
+
+                    true
+                }
+
+                R.id.nav_wishlist -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            WishlistActivity::class.java
+                        )
+                    )
+
+                    true
+                }
+
+                R.id.nav_cart -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            CartActivity::class.java
+                        )
+                    )
+
+                    true
+                }
+
+                R.id.nav_seller -> {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            SellerDashboardActivity::class.java
+                        )
+                    )
+
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 }
