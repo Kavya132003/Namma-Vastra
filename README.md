@@ -224,7 +224,7 @@ com.example.namma_vastra
 ## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/Kavya132003/Namma-Vastr
+git clone https://github.com/Kavya132003/Namma-Vastra
 ```
 
 ---
