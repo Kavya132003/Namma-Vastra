@@ -2,13 +2,21 @@ package com.example.namma_vastra
 
 data class Order(
 
-    val customerName: String = "",
+    var orderId: String = "",
 
-    val address: String = "",
+    var userId: String = "",
 
-    val phone: String = "",
+    var customerName: String = "",
 
-    val totalPrice: String = "",
+    var address: String = "",
 
-    val products: String = ""
+    var phone: String = "",
+
+    var products: String = "",
+
+    var totalPrice: String = "",
+
+    var status: String = "PLACED",
+
+    var timestamp: Long = System.currentTimeMillis()
 )

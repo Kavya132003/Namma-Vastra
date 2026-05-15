@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NammaVastra">
         <activity
+            android:name=".OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adapters.SellerOrderAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".SellerOrderManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".Order"
             android:exported="false" />
         <activity
@@ -56,8 +65,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".OrderHistoryActivity"/>
+        <activity android:name=".OrderHistoryActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

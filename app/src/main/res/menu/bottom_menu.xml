@@ -2,23 +2,34 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- HOME -->
     <item
         android:id="@+id/nav_home"
         android:title="Home"
         android:icon="@android:drawable/ic_menu_view"/>
 
+    <!-- WISHLIST -->
     <item
         android:id="@+id/nav_wishlist"
         android:title="Wishlist"
         android:icon="@android:drawable/ic_menu_save"/>
 
+    <!-- CART -->
     <item
         android:id="@+id/nav_cart"
         android:title="Cart"
         android:icon="@android:drawable/ic_menu_add"/>
 
+    <!-- ORDERS (BUYER SIDE) -->
+    <item
+        android:id="@+id/nav_orders"
+        android:title="Orders"
+        android:icon="@android:drawable/ic_menu_agenda"/>
+
+    <!-- SELLER DASHBOARD -->
     <item
         android:id="@+id/nav_seller"
         android:title="Seller"
         android:icon="@android:drawable/ic_menu_manage"/>
+
 </menu>

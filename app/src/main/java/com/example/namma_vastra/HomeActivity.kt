@@ -13,51 +13,34 @@ import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
 
-    lateinit var recyclerView: RecyclerView
-
-    lateinit var productList: ArrayList<Product>
-
-    lateinit var filteredList: ArrayList<Product>
-
-    lateinit var adapter: ProductAdapter
-
-    lateinit var firestore: FirebaseFirestore
-
-    lateinit var searchView: SearchView
-
-    lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var productList: ArrayList<Product>
+    private lateinit var filteredList: ArrayList<Product>
+    private lateinit var adapter: ProductAdapter
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var searchView: SearchView
+    private lateinit var bottomNavigation: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_home)
 
-        recyclerView =
-            findViewById(R.id.recyclerViewProducts)
+        recyclerView = findViewById(R.id.recyclerViewProducts)
+        searchView = findViewById(R.id.searchView)
+        bottomNavigation = findViewById(R.id.bottomNavigation)
 
-        searchView =
-            findViewById(R.id.searchView)
-
-        bottomNavigation =
-            findViewById(R.id.bottomNavigation)
-
-        recyclerView.layoutManager =
-            LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         productList = ArrayList()
-
         filteredList = ArrayList()
 
         adapter = ProductAdapter(filteredList)
-
         recyclerView.adapter = adapter
 
         firestore = FirebaseFirestore.getInstance()
 
         loadProducts()
-
         setupSearch()
-
         setupBottomNavigation()
     }
 
@@ -68,16 +51,13 @@ class HomeActivity : AppCompatActivity() {
             .addOnSuccessListener { documents ->
 
                 productList.clear()
-
                 filteredList.clear()
 
                 for (document in documents) {
 
-                    val product =
-                        document.toObject(Product::class.java)
+                    val product = document.toObject(Product::class.java)
 
                     productList.add(product)
-
                     filteredList.add(product)
                 }
 
@@ -87,21 +67,17 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupSearch() {
 
-        searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-
-                    filterProducts(newText)
-
-                    return true
-                }
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
             }
-        )
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterProducts(newText)
+                return true
+            }
+        })
     }
 
     private fun filterProducts(query: String?) {
@@ -114,16 +90,13 @@ class HomeActivity : AppCompatActivity() {
 
         } else {
 
-            val searchText =
-                query.lowercase(Locale.getDefault())
+            val searchText = query.lowercase(Locale.getDefault())
 
             for (product in productList) {
 
-                if (
-                    product.name.lowercase(Locale.getDefault())
+                if (product.name.lowercase(Locale.getDefault())
                         .contains(searchText)
                 ) {
-
                     filteredList.add(product)
                 }
             }
@@ -139,43 +112,34 @@ class HomeActivity : AppCompatActivity() {
             when (it.itemId) {
 
                 R.id.nav_home -> {
-
                     true
                 }
 
                 R.id.nav_wishlist -> {
-
                     startActivity(
-                        Intent(
-                            this,
-                            WishlistActivity::class.java
-                        )
+                        Intent(this, WishlistActivity::class.java)
                     )
-
                     true
                 }
 
                 R.id.nav_cart -> {
-
                     startActivity(
-                        Intent(
-                            this,
-                            CartActivity::class.java
-                        )
+                        Intent(this, CartActivity::class.java)
                     )
+                    true
+                }
 
+                R.id.nav_orders -> {
+                    startActivity(
+                        Intent(this, OrderHistoryActivity::class.java)
+                    )
                     true
                 }
 
                 R.id.nav_seller -> {
-
                     startActivity(
-                        Intent(
-                            this,
-                            SellerDashboardActivity::class.java
-                        )
+                        Intent(this, SellerDashboardActivity::class.java)
                     )
-
                     true
                 }
 
